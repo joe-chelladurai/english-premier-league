@@ -1,0 +1,28 @@
+name: Scrape Premier League Table
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight
+  workflow_dispatch:      # Allows manual trigger
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Make script executable
+      run: |
+        chmod +x ./scrape_table.sh
+    
+    - name: Run scraper
+      run: ./scrape_table.sh
+    
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/
+        git commit -m "Update Premier League table data" || echo "No changes to commit"
+        git push
