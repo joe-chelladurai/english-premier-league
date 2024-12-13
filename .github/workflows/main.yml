@@ -12,17 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Make script executable
+    - name: Setup Go environment
+      uses: actions/setup-go@v5.2.0
+            
+    - name: run go
       run: |
-        chmod +x ./scrape_table.sh
+        test.go
     
-    - name: Run scraper
-      run: ./scrape_table.sh
-    
-    - name: Commit and push changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add data/
-        git commit -m "Update Premier League table data" || echo "No changes to commit"
-        git push
